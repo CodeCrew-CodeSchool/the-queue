@@ -14,6 +14,7 @@ app.use(function (request, response, next) {
 
 app.ws('/', function (ws, request) {
     ws.on('message', function (msg) {
+        console.log(`Adding ${msg} to the queue...`)
         queue.push(msg);
     });
     console.log('socket', request.testing);
