@@ -1,28 +1,49 @@
 const express = require("express")
 const cors = require("cors")
+const redis = require('redis');
+const bodyParser = require('body-parser')
+const QueueObject = require("./queue")
+
+const client = redis.createClient({ url: 'rediss://red-chkp6fu4dadfmsn42vug:mNQsZSfPXAhSv4DBnzJtMEUZiAGKAzVl@oregon-redis.render.com:6379' })
+client.on('error', err => console.log('Redis Client Error', err));
+
 const app = express()
-const expressWs = require("express-ws")(app)
 
 app.use(cors())
+app.use(bodyParser.json())
 
-var queue = []
+class Student {
+    constructor(name, description) {
+        this.name = name
+        this.description = description
+    }
+}
 
-app.use(function (request, response, next) {
-    return next();
+let queueObject = new QueueObject()
+
+app.get('/', async function (request, response, next) {
+    let queueArray = await queueObject.getQueue()
+    response.send(queueArray)
 });
 
+app.post('/', async function (request, response) {
+    let studentName = request.body.name
+    let description = request.body.description
+    let student = new Student(studentName, description)
+    await queueObject.addStudentToQueue(student)
 
-app.ws('/', function (ws, request) {
-    ws.on('message', function (msg) {
-        console.log(`Adding ${msg} to the queue...`)
-        queue.push(msg);
-    });
-    console.log('socket', request.testing);
+    response.send("OK")
 });
 
-app.get('/', function (request, response, next) {
-    response.send(queue)
-});
+app.delete("/", async function(request, response){
+    let studentName = request.query.name
+
+    await queueObject.removeStudentFromQueue(studentName)
+
+    response.send("OK")
+})
+
+
 
 app.listen(3001, () => {
     console.log("Listening on port 3001")
