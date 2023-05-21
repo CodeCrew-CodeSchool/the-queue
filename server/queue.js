@@ -1,8 +1,10 @@
 const redis = require("redis")
+const dotenv = require("dotenv")
+dotenv.config()
 
 class QueueObject{
     constructor(){
-        this.redisClient = redis.createClient({ url: 'rediss://red-chkp6fu4dadfmsn42vug:mNQsZSfPXAhSv4DBnzJtMEUZiAGKAzVl@oregon-redis.render.com:6379' })
+        this.redisClient = redis.createClient({ url: process.env.REDIS_CONNECTION_STRING })
     }
     
     async getQueue(){

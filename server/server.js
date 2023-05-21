@@ -1,11 +1,7 @@
 const express = require("express")
 const cors = require("cors")
-const redis = require('redis');
 const bodyParser = require('body-parser')
 const QueueObject = require("./queue")
-
-const client = redis.createClient({ url: 'rediss://red-chkp6fu4dadfmsn42vug:mNQsZSfPXAhSv4DBnzJtMEUZiAGKAzVl@oregon-redis.render.com:6379' })
-client.on('error', err => console.log('Redis Client Error', err));
 
 const app = express()
 
