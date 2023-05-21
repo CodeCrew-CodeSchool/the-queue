@@ -43,4 +43,5 @@ app.delete("/", async function(request, response){
 
 app.listen(3001, () => {
     console.log("Listening on port 3001")
+    console.log(process.env.REDIS_CONNECTION_STRING)
 })
