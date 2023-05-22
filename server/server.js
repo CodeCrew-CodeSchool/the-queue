@@ -12,6 +12,7 @@ class Student {
     constructor(name, description) {
         this.name = name
         this.description = description
+        this.timeJoined = new Date()
     }
 }
 

@@ -1,13 +1,16 @@
 import { Button, Form } from "react-bootstrap"
+import axios from "axios"
 
 function QueueControls(props) {
 
     return <div className="footer">
-                    <Form onSubmit={(event) => {
+                    <Form onSubmit={async (event) => {
                         event.preventDefault()
 
-                        let newStudentName = event.target[0].value
-                        let newQueue = [...props.queue, newStudentName]
+                        let studentName = event.target[0].value
+                        let student = { name: studentName, description: ""}
+                        axios.post(process.env.REACT_APP_API_URL, student)
+                        let newQueue = [...props.queue, student]
                         props.setQueue(newQueue)
 
                         event.target[0].value = ""
