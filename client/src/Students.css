@@ -1,6 +1,7 @@
 .StudentsSelectBox{
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
     width: 100%;
 }
 
@@ -10,6 +11,7 @@
     border: 2px solid black;
     margin-left: 0.5vw;
     margin-right: 0.5vw;
+    margin-top: 0.5vw;
 }
 
 .StudentOption:hover{

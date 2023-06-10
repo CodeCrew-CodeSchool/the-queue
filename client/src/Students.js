@@ -1,5 +1,6 @@
 import './Students.css'
 import axios from "axios"
+import StudentOption from './StudentOption'
 import {useState, useEffect } from "react"
 function Students(props){
     const [students, setStudents] = useState([])
@@ -17,9 +18,18 @@ function Students(props){
 
 
     let studentsHTML = students.map((element)=>{
-        return <div>
-                    <img onClick={()=>{ addStudent(element) }} className="StudentOption" src={element.pictureURL}/>
-               </div>
+        let isQueued = students.some((student) => {
+            if(element.name === student.name){
+                return true
+            }else{
+                return false
+            }
+        })
+        return <StudentOption 
+                    student={element} 
+                    isQueued={isQueued} 
+                    queue={props.queue}
+                    setQueue={props.setQueue}/>
     })
 
     useEffect(()=>{

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import QueueControls from "./QueueControls"
-import Student from "./Student"
+import StudentInQueue from "./StudentInQueue"
 import axios from "axios"
 function Queue() {
     const [queue, setQueue] = useState(undefined)
@@ -30,7 +30,7 @@ function Queue() {
     let queueHTML = []
     if(queue !== undefined){
         queueHTML = queue.map((element) => {
-            return <Student removeStudentFromQueue={removeStudentFromQueue} name={element.name}/>
+            return <StudentInQueue removeStudentFromQueue={removeStudentFromQueue} name={element.name}/>
         })
     }
 
@@ -40,7 +40,7 @@ function Queue() {
         }
     }, [queue])
 
-    return  <div className="queue" style={{border: "4px solid black"}}>
+    return  <div className="queue">
 
                 <h1 style={{fontSize: 60, margin: 0}}> {queue?.length} </h1>
 

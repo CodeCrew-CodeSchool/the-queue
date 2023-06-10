@@ -1,6 +1,6 @@
 import axios
  from "axios"
-function Student(props){
+function StudentInQueue(props){
     return  <div onClick={async () => {
                 axios.delete(process.env.REACT_APP_API_URL + `?name=${props.name}`)
                 props.removeStudentFromQueue(props.name)
@@ -9,4 +9,4 @@ function Student(props){
             </div>
 }
 
-export default Student
+export default StudentInQueue
