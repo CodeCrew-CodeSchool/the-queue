@@ -4,9 +4,8 @@ import Students from "./Students"
 
 function QueueControls(props) {
 
-    return <div className="footer">
-                    <Students queue={props.queue} setQueue={props.setQueue}/>
-            </div>
+    return <Students queue={props.queue} setQueue={props.setQueue}/>
+            
 }
 
 export default QueueControls

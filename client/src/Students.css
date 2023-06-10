@@ -5,9 +5,6 @@
     width: 100%;
 }
 
-.StudentOptionSelected{
-    filter: grayscale(1);
-}
 
 .StudentOption{
     width: 5vw;
@@ -16,6 +13,10 @@
     margin-left: 0.5vw;
     margin-right: 0.5vw;
     margin-top: 0.5vw;
+}
+
+.StudentOptionSelected{
+    filter: grayscale(1);
 }
 
 .StudentOptionNotSelected:hover{

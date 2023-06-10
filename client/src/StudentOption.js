@@ -10,8 +10,6 @@ function StudentOption(props) {
         props.setQueue(newQueue)
     }
 
-    console.log(props.isQueued)
-
     return <div>
                 <img onClick={() => {
                     if(props.isQueued !== true){

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
-import QueueControls from "./QueueControls"
 import StudentInQueue from "./StudentInQueue"
 import axios from "axios"
+import Students from "./Students"
 function Queue() {
     const [queue, setQueue] = useState([])
 
@@ -46,7 +46,7 @@ function Queue() {
                     {queueHTML.length !== 0 ? queueHTML : <h2>Queue is empty</h2>}
                 </div>
 
-                <QueueControls queue={queue} setQueue={setQueue}/>
+                <Students queue={queue} setQueue={setQueue}/>
 
             </div>
 }

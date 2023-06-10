@@ -36,9 +36,11 @@ function Students(props){
         getStudents()
     }, [])
 
-    return <div className="StudentsSelectBox">
-        {studentsHTML}
-    </div>
+    return <div className='footer'>
+                <div className="StudentsSelectBox">
+                    {studentsHTML}
+                </div>
+            </div>
 }
 
 export default Students
