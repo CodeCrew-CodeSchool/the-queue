@@ -3,7 +3,7 @@ import QueueControls from "./QueueControls"
 import StudentInQueue from "./StudentInQueue"
 import axios from "axios"
 function Queue() {
-    const [queue, setQueue] = useState(undefined)
+    const [queue, setQueue] = useState([])
 
     async function updateQueue(){
         let response = await axios.get(process.env.REACT_APP_API_URL)
@@ -28,17 +28,15 @@ function Queue() {
     }
 
     let queueHTML = []
-    if(queue !== undefined){
+
         queueHTML = queue.map((element) => {
             return <StudentInQueue removeStudentFromQueue={removeStudentFromQueue} name={element.name}/>
-        })
-    }
+
+    })
 
     useEffect(() => {
-        if(queue === undefined){
-            updateQueue()
-        }
-    }, [queue])
+        updateQueue()
+    }, [])
 
     return  <div className="queue">
 

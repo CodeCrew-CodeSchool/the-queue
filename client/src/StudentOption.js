@@ -10,8 +10,14 @@ function StudentOption(props) {
         props.setQueue(newQueue)
     }
 
+    console.log(props.isQueued)
+
     return <div>
-                <img onClick={() => { addStudent(props.student) }} className="StudentOption" src={props.student.pictureURL} />
+                <img onClick={() => {
+                    if(props.isQueued !== true){
+                        addStudent(props.student)
+                    }
+                }} className={`StudentOption ${props.isQueued ? "StudentOptionSelected" : "StudentOptionNotSelected"}`} src={props.student.pictureURL} />
            </div>
 }
 

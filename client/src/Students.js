@@ -18,7 +18,7 @@ function Students(props){
 
 
     let studentsHTML = students.map((element)=>{
-        let isQueued = students.some((student) => {
+        let isQueued = props.queue.some((student) => {
             if(element.name === student.name){
                 return true
             }else{
@@ -35,8 +35,6 @@ function Students(props){
     useEffect(()=>{
         getStudents()
     }, [])
-
-    console.log(studentsHTML)
 
     return <div className="StudentsSelectBox">
         {studentsHTML}

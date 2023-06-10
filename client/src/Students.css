@@ -5,6 +5,10 @@
     width: 100%;
 }
 
+.StudentOptionSelected{
+    filter: grayscale(1);
+}
+
 .StudentOption{
     width: 5vw;
     height: 5vw;
@@ -14,6 +18,6 @@
     margin-top: 0.5vw;
 }
 
-.StudentOption:hover{
+.StudentOptionNotSelected:hover{
     opacity: 0.5;
 }
