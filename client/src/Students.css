@@ -1,0 +1,16 @@
+.StudentsSelectBox{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.StudentOption{
+    width: 5vw;
+    height: 5vw;
+    border: 2px solid black;
+    margin: 0.5vw;
+}
+
+.StudentOption:hover{
+    opacity: 0.5;
+}

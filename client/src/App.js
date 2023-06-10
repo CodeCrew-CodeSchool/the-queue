@@ -1,6 +1,6 @@
 import './App.css';
+
 import Queue from './Queue';
-// import QueueControls from './QueueControls';
 import "bootstrap/dist/css/bootstrap.min.css"
 
 function App() {

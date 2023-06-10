@@ -1,5 +1,6 @@
 import { Button, Form } from "react-bootstrap"
 import axios from "axios"
+import Students from "./Students"
 
 function QueueControls(props) {
 
@@ -18,6 +19,7 @@ function QueueControls(props) {
                         <Form.Control placeholder="Your Name" required={true}></Form.Control>
                         <Button type="submit" style={{ marginTop: "3%" }}>Join Queue</Button>
                     </Form>
+                    <Students/>
             </div>
 }
 
