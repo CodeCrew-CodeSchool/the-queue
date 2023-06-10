@@ -7,29 +7,23 @@ class QueueObject{
         this.redisClient.on('error', err => console.log('Redis Client Error', err));
         this.redisClient.connect().then(()=>{ 
             console.log("Successfully connected Redis...")
-            this.redisClient.disconnect()
         })
     }
     
     async getQueue(){
-        await this.redisClient.connect()
         let queueString = await this.redisClient.get("queue")
         let queue = JSON.parse(queueString)
         if(!queue){ queue = [] }
-        this.redisClient.disconnect()
         return queue
     }
 
     async addStudentToQueue(student){
-        await this.redisClient.connect()
         let queue = await this.getQueue()
         queue.push(student)
         await this.redisClient.set('queue', JSON.stringify(queue))
-        this.redisClient.disconnect()
     }
 
     async removeStudentFromQueue(studentName){
-        await this.redisClient.connect()
         let queue = await this.getQueue()
         let studentIndex = queue.findIndex((element) => {
             if(element.name === studentName){
@@ -42,7 +36,6 @@ class QueueObject{
             queue.splice(studentIndex, 1)
         }
         await this.redisClient.set("queue", JSON.stringify(queue))
-        this.redisClient.disconnect()
     }
 }
 

@@ -45,7 +45,7 @@ function Queue() {
                 <h1 style={{fontSize: 60, margin: 0}}> {queue?.length} </h1>
 
                 <div className="students" style={{marginTop: "5vh"}}>
-                    {queueHTML}
+                    {queueHTML.length !== 0 ? queueHTML : <h2>Queue is empty</h2>}
                 </div>
 
                 <QueueControls queue={queue} setQueue={setQueue}/>

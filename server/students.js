@@ -7,23 +7,23 @@ const StudentSchema = new mongoose.Schema({
 })
 
 
-const StudentModel = mongoose.model("Students", StudentSchema)
+const StudentModel = mongoose.model("Students", StudentSchema, "Students")
 
 class StudentsObject{
     constructor(){
         mongoose.connect(process.env.MONGO_CONNECTION_STRING)
             .then(()=>{
                 console.log("Sucessfully connected to Mongo...")
-                mongoose.disconnect()
+                // mongoose.disconnect()
             })
 
             
     }
 
     async getStudents(){
-        await mongoose.connect(process.env.MONGO_CONNECTION_STRING)
+        // await mongoose.connect(process.env.MONGO_CONNECTION_STRING)
         let students = await StudentModel.find()
-        await mongoose.disconnect()
+        // await mongoose.disconnect()
         return students
     }
 

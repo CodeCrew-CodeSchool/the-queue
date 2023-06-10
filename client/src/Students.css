@@ -8,7 +8,8 @@
     width: 5vw;
     height: 5vw;
     border: 2px solid black;
-    margin: 0.5vw;
+    margin-left: 0.5vw;
+    margin-right: 0.5vw;
 }
 
 .StudentOption:hover{

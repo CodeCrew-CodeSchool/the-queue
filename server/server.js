@@ -37,15 +37,13 @@ app.post('/', async function (request, response) {
 
 app.delete("/", async function(request, response){
     let studentName = request.query.name
-
     await queueObject.removeStudentFromQueue(studentName)
-
     response.send("OK")
 })
 
 app.get('/students', async function (request, response, next) {
-    let queueArray = await queueObject.getQueue()
-    response.send(queueArray)
+    let students = await studentObject.getStudents()
+    response.send(students)
 });
 
 
