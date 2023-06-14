@@ -11,7 +11,8 @@ app.use(cors())
 app.use(bodyParser.json())
 
 class Student {
-    constructor(name, description) {
+    constructor(id, name, description) {
+        this.id = id
         this.name = name
         this.description = description
         this.timeJoined = new Date()
@@ -29,15 +30,16 @@ app.get('/', async function (request, response, next) {
 app.post('/', async function (request, response) {
     let studentName = request.body.name
     let description = request.body.description
-    let student = new Student(studentName, description)
+    let id = request.body.id
+    let student = new Student(id, studentName, description)
     await queueObject.addStudentToQueue(student)
 
     response.send("OK")
 });
 
 app.delete("/", async function(request, response){
-    let studentName = request.query.name
-    await queueObject.removeStudentFromQueue(studentName)
+    let studentId = request.query.id
+    await queueObject.removeStudentFromQueue(studentId)
     response.send("OK")
 })
 

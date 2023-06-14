@@ -1,14 +1,12 @@
-import './App.css';
-
-import Queue from './Queue';
+import Header from "./components/Header"
+import Queue from './components/Queue';
 import "bootstrap/dist/css/bootstrap.min.css"
+import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <h1 className='header'>The Queue</h1>
-      </header>
+      <Header/>
       <Queue/>
     </div>
   );
