@@ -38,8 +38,8 @@ app.post('/', async function (request, response) {
 });
 
 app.delete("/", async function(request, response){
-    let studentName = request.query.name
-    await queueObject.removeStudentFromQueue(studentName)
+    let studentId = request.query.id
+    await queueObject.removeStudentFromQueue(studentId)
     response.send("OK")
 })
 

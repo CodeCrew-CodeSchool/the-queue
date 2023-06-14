@@ -1,7 +1,7 @@
 import { Button } from "react-bootstrap"
 import { useAuth0 } from "@auth0/auth0-react"
-import axios from "axios"
 import useQueueAPIClient from "../../clients/QueueAPI"
+
 function QueueControls(props){
     const user = props.user
     const { loginWithRedirect, logout, isAuthenticated } = useAuth0()

@@ -23,10 +23,10 @@ class QueueObject{
         await this.redisClient.set('queue', JSON.stringify(queue))
     }
 
-    async removeStudentFromQueue(studentName){
+    async removeStudentFromQueue(studentId){
         let queue = await this.getQueue()
         let studentIndex = queue.findIndex((element) => {
-            if(element.name === studentName){
+            if(element.id === studentId){
                 return true
             }else{
                 return false
