@@ -1,41 +1,63 @@
 const redis = require("redis")
-
+const sqlite3 = require('sqlite3').verbose();
 
 class QueueObject{
     constructor(){
-        this.redisClient = redis.createClient({ url: process.env.REDIS_CONNECTION_STRING })
-        this.redisClient.on('error', err => console.log('Redis Client Error', err));
-        this.redisClient.connect().then(()=>{ 
-            console.log("Successfully connected Redis...")
-        })
+        this.sqliteClient = new sqlite3.Database(':memory:');
+        this.sqliteClient.run(`CREATE TABLE IF NOT EXISTS queue (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name STRING,
+            description STRING,
+            timeJoined DATETIME DEFAULT CURRENT_TIMESTAMP
+        );`, (error) => { error == null ? console.log("Successfully connected Sqlite database...") 
+                                        : console.log("Could not connect to Sqlite database...")})
+
     }
     
     async getQueue(){
-        let queueString = await this.redisClient.get("queue")
-        let queue = JSON.parse(queueString)
-        if(!queue){ queue = [] }
-        return queue
+        let request = new Promise((resolve, reject) => {
+            const query = "SELECT * FROM queue";
+            this.sqliteClient.all(query, [], (err, rows) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(rows);
+                }
+            });
+        });
+        return request
     }
 
     async addStudentToQueue(student){
-        let queue = await this.getQueue()
-        queue.push(student)
-        await this.redisClient.set('queue', JSON.stringify(queue))
+        var request = new Promise((resolve, reject) => {
+            const query = "INSERT INTO queue (name, description) VALUES (?, ?)"
+            this.sqliteClient.run(query, [student.name, student.description], (err) => {
+                if (err) {
+                    console.error("Error adding student to queue", err.message);
+                    reject(err)
+                } else {
+                    console.log("Student added to queue");
+                    resolve(null)
+                }
+            })
+        })
+        return request
     }
 
     async removeStudentFromQueue(studentId){
-        let queue = await this.getQueue()
-        let studentIndex = queue.findIndex((element) => {
-            if(element.id === studentId){
-                return true
-            }else{
-                return false
-            }
+        var request = new Promise((resolve, reject) => {
+            const query = "DELETE FROM queue WHERE id = ?";
+            this.sqliteClient.run(query, studentId, (err) => {
+                if (err) {
+                    console.error("Removing student from queue", err.message);
+                    reject(err)
+                } else {
+                    console.log("Student removed from queue");
+                    resolve(null)
+                }
+            })
         })
-        if(studentIndex !== -1){
-            queue.splice(studentIndex, 1)
-        }
-        await this.redisClient.set("queue", JSON.stringify(queue))
+        return request
     }
 }
 
