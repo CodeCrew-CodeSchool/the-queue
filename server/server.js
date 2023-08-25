@@ -48,5 +48,4 @@ app.get('/students', async function (request, response, next) {
 
 app.listen(3001, () => {
     console.log("Listening on port 3001")
-    console.log(process.env.REDIS_CONNECTION_STRING)
 })
