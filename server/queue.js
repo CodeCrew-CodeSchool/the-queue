@@ -2,7 +2,7 @@ const redis = require("redis")
 const sqlite3 = require('sqlite3').verbose();
 
 class QueueObject{
-    constructor(){
+    constructor() {
         this.sqliteClient = new sqlite3.Database(process.env.SQLITE_FILE_PATH);
         this.sqliteClient.run(`CREATE TABLE IF NOT EXISTS queue (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
