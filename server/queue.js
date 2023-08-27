@@ -4,8 +4,7 @@ const pg = require('pg')
 class TheQueue{
     constructor() {
         this.dbClient = new pg.Client({
-            connectionString: process.env.POSTGRES_CONNECTION_STRING,
-            ssl: true
+            connectionString: process.env.POSTGRES_CONNECTION_STRING
         })
         this.dbClient.connect()
             .then((res) => {
