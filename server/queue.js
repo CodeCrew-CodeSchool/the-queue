@@ -1,12 +1,11 @@
 
 const pg = require('pg')
 
-class QueueObject{
+class TheQueue{
     constructor() {
         this.dbClient = new pg.Client({
-            user: 'postgres',
-            host: 'localhost',
-            password: 'mysecretpassword',
+            connectionString: process.env.POSTGRES_CONNECTION_STRING,
+            ssl: true
         })
         this.dbClient.connect()
             .then((res) => {
@@ -44,4 +43,4 @@ class QueueObject{
     }
 }
 
-module.exports = QueueObject;
+module.exports = TheQueue;
