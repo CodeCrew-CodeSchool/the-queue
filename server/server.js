@@ -18,7 +18,7 @@ class Student {
 }
 
 let queueObject = new QueueObject()
-let studentObject = new StudentObject()
+// let studentObject =  StudentObject()
 
 app.get('/', async function (request, response, next) {
     let queueArray = await queueObject.getQueue()
