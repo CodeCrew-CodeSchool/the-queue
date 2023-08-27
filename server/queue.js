@@ -1,63 +1,46 @@
-const redis = require("redis")
-const sqlite3 = require('sqlite3').verbose();
+
+const pg = require('pg')
 
 class QueueObject{
     constructor() {
-        this.sqliteClient = new sqlite3.Database(process.env.SQLITE_FILE_PATH);
-        this.sqliteClient.run(`CREATE TABLE IF NOT EXISTS queue (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name STRING,
-            description STRING,
-            timeJoined DATETIME DEFAULT CURRENT_TIMESTAMP
-        );`, (error) => { error == null ? console.log("Successfully connected Sqlite database...") 
-                                        : console.log("Could not connect to Sqlite database...")})
-
+        this.dbClient = new pg.Client({
+            user: 'postgres',
+            host: 'localhost',
+            password: 'mysecretpassword',
+        })
+        this.dbClient.connect()
+            .then((res) => {
+                console.log("Successfully connected to Postgres database...")
+                this.dbClient.query(`CREATE TABLE IF NOT EXISTS queue (
+                    id SERIAL PRIMARY KEY,
+                    name VARCHAR(255),
+                    description TEXT,
+                    timeJoined TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+                  );`)
+            })
     }
     
     async getQueue(){
-        let request = new Promise((resolve, reject) => {
-            const query = "SELECT * FROM queue";
-            this.sqliteClient.all(query, [], (err, rows) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(rows);
-                }
-            });
-        });
-        return request
+        const query = "SELECT * FROM queue";
+        var result = await this.dbClient.query(query)
+        return result.rows
+
     }
 
     async addStudentToQueue(student){
-        var request = new Promise((resolve, reject) => {
-            const query = "INSERT INTO queue (name, description) VALUES (?, ?)"
-            this.sqliteClient.run(query, [student.name, student.description], (err) => {
-                if (err) {
-                    console.error("Error adding student to queue", err.message);
-                    reject(err)
-                } else {
-                    console.log("Student added to queue");
-                    resolve(null)
-                }
-            })
-        })
-        return request
+        const query = `INSERT INTO queue (name, description)
+                        VALUES ($1, $2)
+                        RETURNING id`
+        var result = await this.dbClient.query(query, [student.name, student.description])
+
+        return result.rows
     }
 
     async removeStudentFromQueue(studentId){
-        var request = new Promise((resolve, reject) => {
-            const query = "DELETE FROM queue WHERE id = ?";
-            this.sqliteClient.run(query, studentId, (err) => {
-                if (err) {
-                    console.error("Removing student from queue", err.message);
-                    reject(err)
-                } else {
-                    console.log("Student removed from queue");
-                    resolve(null)
-                }
-            })
-        })
-        return request
+        const query = `DELETE FROM queue
+                        WHERE id = $1`
+        var result = await this.dbClient.query(query, [studentId])
+        return result.rows
     }
 }
 
