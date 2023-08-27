@@ -17,10 +17,11 @@ class TheQueue{
                     timeJoined TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
                   );`)
             })
+        
     }
     
     async getQueue(){
-        const query = "SELECT * FROM queue";
+        const query = "SELECT * FROM queue ORDER BY timeJoined ASC";
         var result = await this.dbClient.query(query)
         return result.rows
 
