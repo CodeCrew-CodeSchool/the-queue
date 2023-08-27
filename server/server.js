@@ -2,8 +2,7 @@ const express = require("express")
 const cors = require("cors")
 require("dotenv").config()
 const bodyParser = require('body-parser')
-const QueueObject = require("./queue")
-const StudentObject = require("./students")
+const TheQueue = require("./queue")
 
 const app = express()
 
@@ -17,11 +16,10 @@ class Student {
     }
 }
 
-let queueObject = new QueueObject()
-// let studentObject =  StudentObject()
+let theQueue = new TheQueue()
 
 app.get('/', async function (request, response, next) {
-    let queueArray = await queueObject.getQueue()
+    let queueArray = await theQueue.getQueue()
     response.send(queueArray)
 });
 
@@ -29,14 +27,14 @@ app.post('/', async function (request, response) {
     let studentName = request.body.name
     let description = request.body.description
     let student = new Student(studentName, description)
-    await queueObject.addStudentToQueue(student)
+    await theQueue.addStudentToQueue(student)
 
     response.send("OK")
 });
 
 app.delete("/", async function(request, response){
     let studentId = request.query.id
-    await queueObject.removeStudentFromQueue(studentId)
+    await theQueue.removeStudentFromQueue(studentId)
     response.send("OK")
 })
 

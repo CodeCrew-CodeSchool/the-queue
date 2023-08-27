@@ -1,7 +1,7 @@
 
 const pg = require('pg')
 
-class QueueObject{
+class TheQueue{
     constructor() {
         this.dbClient = new pg.Client({
             connectionString: process.env.POSTGRES_CONNECTION_STRING,
@@ -43,4 +43,4 @@ class QueueObject{
     }
 }
 
-module.exports = QueueObject;
+module.exports = TheQueue;
