@@ -1,41 +1,46 @@
-const redis = require("redis")
 
+const pg = require('pg')
 
 class QueueObject{
-    constructor(){
-        this.redisClient = redis.createClient({ url: process.env.REDIS_CONNECTION_STRING })
-        this.redisClient.on('error', err => console.log('Redis Client Error', err));
-        this.redisClient.connect().then(()=>{ 
-            console.log("Successfully connected Redis...")
+    constructor() {
+        this.dbClient = new pg.Client({
+            user: 'postgres',
+            host: 'localhost',
+            password: 'mysecretpassword',
         })
+        this.dbClient.connect()
+            .then((res) => {
+                console.log("Successfully connected to Postgres database...")
+                this.dbClient.query(`CREATE TABLE IF NOT EXISTS queue (
+                    id SERIAL PRIMARY KEY,
+                    name VARCHAR(255),
+                    description TEXT,
+                    timeJoined TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+                  );`)
+            })
     }
     
     async getQueue(){
-        let queueString = await this.redisClient.get("queue")
-        let queue = JSON.parse(queueString)
-        if(!queue){ queue = [] }
-        return queue
+        const query = "SELECT * FROM queue";
+        var result = await this.dbClient.query(query)
+        return result.rows
+
     }
 
     async addStudentToQueue(student){
-        let queue = await this.getQueue()
-        queue.push(student)
-        await this.redisClient.set('queue', JSON.stringify(queue))
+        const query = `INSERT INTO queue (name, description)
+                        VALUES ($1, $2)
+                        RETURNING id`
+        var result = await this.dbClient.query(query, [student.name, student.description])
+
+        return result.rows
     }
 
     async removeStudentFromQueue(studentId){
-        let queue = await this.getQueue()
-        let studentIndex = queue.findIndex((element) => {
-            if(element.id === studentId){
-                return true
-            }else{
-                return false
-            }
-        })
-        if(studentIndex !== -1){
-            queue.splice(studentIndex, 1)
-        }
-        await this.redisClient.set("queue", JSON.stringify(queue))
+        const query = `DELETE FROM queue
+                        WHERE id = $1`
+        var result = await this.dbClient.query(query, [studentId])
+        return result.rows
     }
 }
 
