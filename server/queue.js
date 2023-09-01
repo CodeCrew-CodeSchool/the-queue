@@ -12,6 +12,7 @@ class TheQueue{
                 this.dbClient.query(`CREATE TABLE IF NOT EXISTS queue (
                     id SERIAL PRIMARY KEY,
                     name VARCHAR(255),
+                    email VARCHAR(255) UNIQUE,
                     description TEXT,
                     timeJoined TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
                   );`)
@@ -27,18 +28,18 @@ class TheQueue{
     }
 
     async addStudentToQueue(student){
-        const sql = `INSERT INTO queue (name, description)
-                        VALUES ($1, $2)
+        const sql = `INSERT INTO queue (name, description, email)
+                        VALUES ($1, $2, $3)
                         RETURNING id`
-        var result = await this.dbClient.query(sql, [student.name, student.description])
+        var result = await this.dbClient.query(sql, [student.name, student.description, student.email])
 
         return result.rows
     }
 
-    async removeStudentFromQueue(studentId){
+    async removeStudentFromQueue(studentEmail){
         const sql = `DELETE FROM queue
-                        WHERE id = $1`
-        var result = await this.dbClient.query(sql, [studentId])
+                        WHERE email = $1`
+        var result = await this.dbClient.query(sql, [studentEmail])
         return result.rows
     }
 }

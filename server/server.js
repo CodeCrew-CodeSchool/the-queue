@@ -3,7 +3,7 @@ const cors = require("cors")
 require("dotenv").config()
 const bodyParser = require('body-parser')
 const TheQueue = require("./queue")
-
+const Student = require("./Models/Student")
 const app = express()
 
 app.use(cors())
@@ -21,15 +21,16 @@ app.get('/', async function (request, response, next) {
 app.post('/', async function (request, response) {
     let studentName = request.body.name
     let description = request.body.description
-    let student = new Student(studentName, description)
+    let email = request.body.email
+    let student = new Student(studentName, description, email)
     await theQueue.addStudentToQueue(student)
 
     response.send("OK")
 });
 
 app.delete("/", async function(request, response){
-    let studentId = request.query.id
-    await theQueue.removeStudentFromQueue(studentId)
+    let studentEmail = request.query.email
+    await theQueue.removeStudentFromQueue(studentEmail)
     response.send("OK")
 })
 

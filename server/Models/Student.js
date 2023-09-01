@@ -1,6 +1,7 @@
 class Student {
-    constructor(name, description) {
+    constructor(name, description, email) {
         this.name = name
+        this.email = email
         this.description = description
     }
 }
