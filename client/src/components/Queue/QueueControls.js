@@ -9,7 +9,7 @@ function QueueControls(props){
 
     async function joinQueue(){
         let userId = user.sub.split("|")[1]
-        let studentObject = {id: userId, name: user.given_name, description: ""}
+        let studentObject = {email: user.email, name: user.given_name, description: ""}
         let oldQueue = [...props.queue]
 
         QueueAPIClient.post("/", studentObject).catch((error)=>{
@@ -24,17 +24,18 @@ function QueueControls(props){
 
     }
 
+
     async function leaveQueue(){
-        let userId = user.sub.split("|")[1]
+        let userEmail = user.email
         let oldQueue = [...props.queue]
 
-        QueueAPIClient.delete("/", {params: {id: userId}}).catch((error) =>{
+        QueueAPIClient.delete("/", {params: {email: userEmail}}).catch((error) =>{
             console.log(error.message)
             props.setQueue(oldQueue)
             props.setStudentIsInQueue(true)
         })
         let newQueue = props.queue.filter((student)=>{
-            if(student.id !== userId){
+            if(student.email !== userEmail){
                 return true
             }else{
                 return false

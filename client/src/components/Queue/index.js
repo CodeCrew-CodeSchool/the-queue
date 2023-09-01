@@ -38,20 +38,17 @@ function Queue() {
         return <StudentInQueue removeStudentFromQueue={removeStudentFromQueue} name={element.name} />
 
     })
-    console.log("isLoading", isLoading)
-    console.log("user", user)
     useEffect(() => {
         updateQueue()
 
     }, [])
 
     useEffect(()=>{
-        console.log(user)
         if(user){
-            let userId = user.sub.split("|")[1]
+            let userEmail = user.email
             queue.some((element)=>{
                 console.log("element", element)
-                if(element.id === userId){
+                if(element.email === userEmail){
                     setStudentIsInQueue(true)
                 }
             })
