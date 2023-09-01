@@ -9,12 +9,7 @@ const app = express()
 app.use(cors())
 app.use(bodyParser.json())
 
-class Student {
-    constructor(name, description) {
-        this.name = name
-        this.description = description
-    }
-}
+
 
 let theQueue = new TheQueue()
 

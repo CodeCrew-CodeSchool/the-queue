@@ -6,7 +6,7 @@ function QueueControls(props){
     const user = props.user
     const { loginWithRedirect, logout, isAuthenticated } = useAuth0()
     const QueueAPIClient  = useQueueAPIClient()
-
+console.log("isAuthenticated", isAuthenticated)
     async function joinQueue(){
         let userId = user.sub.split("|")[1]
         let studentObject = {id: userId, name: user.given_name, description: ""}
@@ -23,6 +23,7 @@ function QueueControls(props){
         props.setStudentIsInQueue(true)
 
     }
+
 
     async function leaveQueue(){
         let userId = user.sub.split("|")[1]
