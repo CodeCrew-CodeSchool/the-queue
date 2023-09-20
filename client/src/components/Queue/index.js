@@ -18,55 +18,49 @@ function Queue() {
   }
 
   async function removeStudentFromQueue(studentName) {
-    axios.delete(process.env.REACT_APP_API_URL + `?name=${studentName}`);
+    axios.delete(process.env.REACT_APP_API_URL + `?name=${studentName}`)
     let studentIndex = queue.findIndex((element) => {
-      if (element.name === studentName) {
-        return true;
-      } else {
-        return false;
-      }
-    });
-    if (studentIndex !== -1) {
-      queue.splice(studentIndex, 1);
-    }
-    let updatedQueue = [...queue];
-    setQueue(updatedQueue);
-  }
-
-  useEffect(() => {
-    updateQueue();
-  }, []);
-
-  useEffect(() => {
-    if (user) {
-      let userEmail = user.email;
-      queue.some((element) => {
-        console.log("element", element);
-        if (element.email === userEmail) {
-          setStudentIsInQueue(true);
+        if (element.name === studentName) {
+            return true
+        } else {
+            return false
         }
-      });
+    })
+    if (studentIndex !== -1) {
+        queue.splice(studentIndex, 1)
     }
-  }, [queue, user]);
+    let updatedQueue = [...queue]
+    setQueue(updatedQueue)
+}
 
-  // Render only the first user in the queue
-  let firstUserInQueue = null;
-  if (queue.length > 0) {
-    
-    firstUserInQueue = (
-      <StudentInQueue
-        removeStudentFromQueue={removeStudentFromQueue}
-        name={queue[0].name}
-        description={queue[0].description}
-      />
-    );
-  }
+let queueHTML = []
+
+queueHTML = queue.map((element) => {
+    return <StudentInQueue removeStudentFromQueue={removeStudentFromQueue} name={element.name} description={element.description} />
+
+})
+useEffect(() => {
+    updateQueue()
+
+}, [])
+
+useEffect(()=>{
+    if(user){
+        let userEmail = user.email
+        queue.some((element)=>{
+            console.log("element", element)
+            if(element.email === userEmail){
+                setStudentIsInQueue(true)
+            }
+        })
+    }
+}, [queue, user])
 
   return (
     <div className="Queue">
       <h1 style={{ fontSize: 60, margin: 0 }}> {queue?.length} </h1>
       <div className="students" style={{ marginTop: "5vh" }}>
-        {firstUserInQueue || <h2>Queue is empty</h2>}
+        {queueHTML.length !== 0 ? queueHTML : <h2>Queue is empty</h2>}
       </div>
       <QueueControls
         user={user}
